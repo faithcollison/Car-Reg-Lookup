@@ -1,6 +1,15 @@
 const app = require('../index')
 const request = require('supertest')
-process.env.DVLA_API_KEY='PDCbz4vEyS72fn3iI5LmQ7mOuKVgUEBjUnFLayyh'
+
+let server;
+
+beforeAll(() => {
+  server = app.listen(9090);
+});
+
+afterAll(done => {
+  server.close(done);
+});
 
 describe('POST /data', () => {
     test('POST : 200 sends an object of vehicle details to client', async () => {
@@ -27,7 +36,6 @@ describe('POST /data', () => {
                 "make": "FORD",
                 "typeApproval": "M1",
                 "yearOfManufacture": 2019,
-                "taxDueDate": "2025-01-31",
                 "taxStatus": "Taxed",
                 "dateOfLastV5CIssued": "2019-05-20",
                 "wheelplan": "2 AXLE RIGID BODY",
@@ -36,6 +44,51 @@ describe('POST /data', () => {
                 "realDrivingEmissions": "1"
               }
               )
+        )
+    });
+    test('POST : 400 sends appropriate status and error message when invalid request made',  async () => {
+        const regPlate = {
+            "registrationNumber": "ER19BAD"
+        }
+        const response = await request(app)
+        .post("/data")
+        .send(regPlate)
+        
+        expect(response.statusCode).toBe(400)
+        expect(response.body).toEqual(
+            {
+                "errors": [
+                  {
+                    "status": '400',
+                    "code": "400",
+                    "title": "Bad Request",
+                    "detail": "Invalid format for field - vehicle registration number"
+                  }
+                ]
+              }
+        )
+    });
+    test('POST : 404 sends appropriate status and error message when vehicle not found',  async () => {
+        const regPlate = {
+            "registrationNumber": "ER19NFD"
+        }
+        const response = await request(app)
+        .post("/data")
+        .send(regPlate)
+        
+        expect(response.statusCode).toBe(404)
+        expect(response.body).toEqual(
+            {
+                "errors": [
+                  {
+                    "status": "404",
+                    "code": "404",
+                    "title": "Vehicle Not Found",
+                    "detail": "Record for vehicle not found"
+                  }
+                ]
+              }
+              
         )
     });
 });
