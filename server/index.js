@@ -1,6 +1,8 @@
 const express = require("express");
 const axios = require("axios");
-// const api = process.env.DVLA_API_KEY;
+require('dotenv').config()
+
+const api = process.env.DVLA_API_KEY;
 
 const app = express();
 app.use(express.json());
@@ -12,7 +14,7 @@ app.post("/data", async (req, res, next) => {
       method: "post",
       url: "https://uat.driver-vehicle-licensing.api.gov.uk/vehicle-enquiry/v1/vehicles",
       headers: {
-        "x-api-key": "PDCbz4vEyS72fn3iI5LmQ7mOuKVgUEBjUnFLayyh",
+        "x-api-key": api,
         "Content-Type": "application/json",
       },
       data: JSON.stringify({ registrationNumber: regPlate }),
