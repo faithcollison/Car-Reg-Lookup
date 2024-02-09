@@ -3,17 +3,21 @@ const axios = require("axios");
 require('dotenv').config()
 
 const api = process.env.PRODUCTION_API_KEY
-// process.env.TEST_API_KEY || 
+// process.env.TEST_API_KEY || np
 const app = express();
 const cors = require("cors");
 
 app.use(cors());
 app.use(express.json());
 
-app.post("/data", async (req, res, next) => {
+app.get("/", function (req, res, next){
+  res.send("hello world")
+})
+
+app.get("/api/lookup", async (req, res, next) => {
   console.log("Received POST request for /data");
   try {
-    const regPlate = req.body.registrationNumber;
+    const regPlate = req.query.registrationNumber;
     const axiosConfig = {
       method: "post",
       url: "https://driver-vehicle-licensing.api.gov.uk/vehicle-enquiry/v1/vehicles",
