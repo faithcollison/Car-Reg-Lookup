@@ -11,6 +11,7 @@ app.use(cors());
 app.use(express.json());
 
 app.post("/data", async (req, res, next) => {
+  console.log("Received POST request for /data");
   try {
     const regPlate = req.body.registrationNumber;
     const axiosConfig = {
@@ -24,13 +25,16 @@ app.post("/data", async (req, res, next) => {
     };
 
     const response = await axios(axiosConfig);
+    console.log("Response received from DVLA API", response.data); 
     res.send(response.data);
   } catch (error) {
+    console.error("Error processing request", error);
     next(error);
   }
 });
 
 app.use((err, req, res, next) => {
+  console.error("Error handling middleware", err); 
   if(err.response.status === 400){
     res.status(400).send(err.response.data)
   }
