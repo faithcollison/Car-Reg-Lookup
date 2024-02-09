@@ -3,8 +3,10 @@ const axios = require("axios");
 require('dotenv').config()
 
 const api = process.env.TEST_API_KEY || process.env.PRODUCTION_API_KEY
-
 const app = express();
+const cors = require("cors");
+
+app.use(cors());
 app.use(express.json());
 
 app.post("/data", async (req, res, next) => {
