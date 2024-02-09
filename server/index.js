@@ -3,7 +3,6 @@ const axios = require("axios");
 require('dotenv').config()
 
 const api = process.env.PRODUCTION_API_KEY
-// process.env.TEST_API_KEY || np
 const app = express();
 const cors = require("cors");
 
@@ -11,7 +10,7 @@ app.use(cors());
 app.use(express.json());
 
 app.get("/", function (req, res, next){
-  res.send("hello world")
+  res.send("Home Page")
 })
 
 app.get("/api/lookup", async (req, res, next) => {
