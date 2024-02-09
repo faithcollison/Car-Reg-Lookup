@@ -2,7 +2,8 @@ const express = require("express");
 const axios = require("axios");
 require('dotenv').config()
 
-const api = process.env.TEST_API_KEY || process.env.PRODUCTION_API_KEY
+const api = process.env.PRODUCTION_API_KEY
+// process.env.TEST_API_KEY || 
 const app = express();
 const cors = require("cors");
 
@@ -14,7 +15,7 @@ app.post("/data", async (req, res, next) => {
     const regPlate = req.body.registrationNumber;
     const axiosConfig = {
       method: "post",
-      url: "https://uat.driver-vehicle-licensing.api.gov.uk/vehicle-enquiry/v1/vehicles",
+      url: "https://driver-vehicle-licensing.api.gov.uk/vehicle-enquiry/v1/vehicles",
       headers: {
         "x-api-key": api,
         "Content-Type": "application/json",
@@ -38,8 +39,5 @@ app.use((err, req, res, next) => {
   }
   else res.status(500).send(err.response.data);
 });
-
-
-// app.listen(9090, () => console.log("Server started on port 9090"));
 
 module.exports = app;
