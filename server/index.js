@@ -2,7 +2,7 @@ const express = require("express");
 const axios = require("axios");
 require('dotenv').config()
 
-const api = process.env.DVLA_API_KEY;
+const api = process.env.TEST_API_KEY || process.env.PRODUCTION_API_KEY
 
 const app = express();
 app.use(express.json());
