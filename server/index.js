@@ -3,9 +3,6 @@ const axios = require("axios");
 const app = express();
 const cors = require("cors");
 
-
-const ENV = process.env.NODE_ENV || 'development';
-
 require('dotenv').config({
   path: `${__dirname}/../.env`,
 });
@@ -26,10 +23,8 @@ app.get("/api/lookup", async (req, res, next) => {
     const axiosConfig = {
       method: "post",
       url: apiUrl,
-      // url: "https://driver-vehicle-licensing.api.gov.uk/vehicle-enquiry/v1/vehicles",
       headers: {
         "x-api-key": apiKey,
-        // "x-api-key": "nfZYUwMs1R8KOPBMB6cFG2zNRzVNFrowa0Az7L4L",
         "Content-Type": "application/json",
       },
       data: JSON.stringify({ registrationNumber: regPlate }),
